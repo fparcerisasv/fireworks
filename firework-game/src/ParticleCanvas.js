@@ -2,14 +2,14 @@
 
 import React, { useEffect, useRef } from 'react';
 
-const ParticleCanvas = ({ color,power,metal }) => {
+const ParticleCanvas = ({ color,power,metal ,setCount}) => {
   const canvasRef = useRef(null);
   const particles = useRef([]);
   const animationId = useRef(null); // Store animation frame ID
 
   const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
 
-  const gravity = 0.03;
+  const gravity = 0.003;
   const friction = 0.99;
 
   class Particle {
@@ -44,7 +44,7 @@ const ParticleCanvas = ({ color,power,metal }) => {
       this.velocity.y += gravity;
       this.x += this.velocity.x;
       this.y += this.velocity.y;
-      this.opacity -= 0.003;
+      this.opacity -= 0.01;
     }
   }
 
@@ -76,6 +76,7 @@ const ParticleCanvas = ({ color,power,metal }) => {
         )
       );
     }
+    setCount((prevCount) => prevCount + 0.000368*(power * 21.05 + 78.95));
   };
 
   const animate = (c) => {

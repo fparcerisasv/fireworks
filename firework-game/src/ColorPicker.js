@@ -60,7 +60,7 @@ const ColorPicker = ({ selectedColor, setColor, power, setPower, metal, setMetal
         onChange={(e) => setPower(Number(e.target.value))} // Update power value
         style={{ marginTop: '5px' }}
       />
-      <span style={{ color: 'white' }}>{`Current Powder: ${power} g`}</span>
+      <span style={{ color: 'white' }}>{`Current Powder: ${(power * 21.05 + 78.95).toFixed(2)} g`}</span>
     </div>
   );
 };
