@@ -3,7 +3,7 @@
 import React from 'react';
 
 // Define a mapping of color names to their hex values
-const colorOptions = [
+const colors = [
     { name: 'Coure', color: '#2185C5' },
     { name: 'Magnesi', color: '#f9f3ee' },
     { name: 'Calci', color: '#f1c232' },
@@ -13,29 +13,39 @@ const colorOptions = [
   
 ];
 
-const ColorPicker = ({ selectedColor, setColor, power, setPower, metal, setMetal }) => {
+const ColorPicker = ({ selectedColors, setSelectedColors, power, setPower, metal, setMetal }) => {
+    const handleColorChange = (color) => {
+        // Add the color if it's not in the selectedColors, otherwise remove it
+        setSelectedColors((prevColors) => {
+          if (prevColors.includes(color)) {
+            return prevColors.filter(c => c !== color); // Remove color
+          } else {
+            return [...prevColors, color]; // Add color
+          }
+        });
+      };
   return (
     <div style={{ display: 'flex', flexDirection: 'column', color: 'white' }}>
       <span>Select Particle Color:</span>
       <div style={{ marginTop: '5px' }}>
-        {colorOptions.map(({ name, color }) => (
+      {colors.map((item, idx) => (
           <button
-            key={name}
+            key={idx}
+            onClick={() => handleColorChange(item.color)}
             style={{
-              backgroundColor: color,
-              border: 'none',
-              borderRadius: '5px',
+              backgroundColor: item.color,
               color: 'white',
+              marginRight: '10px',
+              borderRadius: '5px',
               padding: '5px 10px',
               margin: '5px 0',
               cursor: 'pointer',
-              outline: selectedColor === color ? '2px solid black' : 'none',
+              border: selectedColors.includes(item.color) ? '3px solid white' : '3px solid black',
               width: '100%', // Makes button full-width
               textAlign: 'left', // Align text to the left
             }}
-            onClick={() => setColor(color)} // Update selected color
           >
-            {name} {/* Display color name */}
+            {item.name}
           </button>
         ))}
       </div>

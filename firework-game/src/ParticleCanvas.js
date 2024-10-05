@@ -1,8 +1,9 @@
 // src/components/ParticleCanvas.js
 //code borrowed from https://codepen.io/chriscourses/pen/Vwamprd 
+import { color } from 'framer-motion';
 import React, { useEffect, useRef } from 'react';
 
-const ParticleCanvas = ({ color,power,metal ,setCount}) => {
+const ParticleCanvas = ({ colors,power,metal ,setCount}) => {
   const canvasRef = useRef(null);
   const particles = useRef([]);
   const animationId = useRef(null); // Store animation frame ID
@@ -61,14 +62,19 @@ const ParticleCanvas = ({ color,power,metal ,setCount}) => {
     const particleCount = 500;
     //const power = 12;
     let radians = (Math.PI * 2) / particleCount;
-
+    const colorCount = colors.length; // Number of selected colors
+    //const particlesPerColor = Math.floor(particleCount / colorCount); // Particles per color
     for (let i = 0; i < particleCount; i++) {
+        const colorIndex = Math.floor(colorCount * Math.random()); // Alternate between colors
+
+        const particleColor = colors[colorIndex]; // Assign the color based on index
+  
       particles.current.push(
         new Particle(
           mouse.current.x,
           mouse.current.y,
           3,
-          color,// Use the selected color from props
+          particleColor,// Use the selected color from props
           {
             x: Math.cos(radians * i) * (Math.random() * power),
             y: Math.sin(radians * i) * (Math.random() * power),
@@ -109,7 +115,7 @@ const ParticleCanvas = ({ color,power,metal ,setCount}) => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('click', handleClick);
     };//eslint-disable-next-line
-  }, [color,power,metal]); // Update animation if color changes
+  }, [colors,power,metal]); // Update animation if color changes
 
   return <canvas ref={canvasRef} />;
 };

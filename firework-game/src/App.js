@@ -6,7 +6,7 @@ import ColorPicker from './ColorPicker';
 import './App.css'; // Make sure to have some basic styles
 
 const App = () => {
-  const [color, setColor] = useState('#2185C5'); // Default color
+  const [selectedColors, setSelectedColors] = useState(['#2185C5']); // Start with one default color
   const [power, setPower] = useState(12); // Default power value
   const [metal, setMetal] = useState(12); // Defaultmetal value
   const [count, setCount] = useState(0);
@@ -14,12 +14,12 @@ const App = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <div style={{ flex: 1 }}>
-        <ParticleCanvas color={color} power={power} metal = {metal} setCount={setCount} /> {/* Pass power value */}
+        <ParticleCanvas  colors={selectedColors} power={power} metal = {metal} setCount={setCount} /> {/* Pass power value */}
       </div>
       <div style={{ padding: '20px', position: 'fixed', right: '10px', top: '10px' }}>
         <ColorPicker 
-          selectedColor={color} 
-          setColor={setColor} 
+          selectedColors={selectedColors} 
+          setSelectedColors={setSelectedColors}
           power={power} 
           setPower={setPower} // Pass setPower to ColorPicker
           metal={metal} 
