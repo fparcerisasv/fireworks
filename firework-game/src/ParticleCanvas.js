@@ -2,13 +2,14 @@
 
 import React, { useEffect, useRef } from 'react';
 
-const ParticleCanvas = () => {
+const ParticleCanvas = ({ color,power }) => {
   const canvasRef = useRef(null);
   const particles = useRef([]);
+  const animationId = useRef(null); // Store animation frame ID
 
   const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
 
-  const gravity = 0.02;
+  const gravity = 0.03;
   const friction = 0.99;
 
   class Particle {
@@ -16,7 +17,8 @@ const ParticleCanvas = () => {
       this.x = x;
       this.y = y;
       this.radius = radius;
-      this.color = color;
+      this.color = color; // Store the particle's color
+
       this.velocity = {
         x: velocity.x,
         y: velocity.y,
@@ -29,7 +31,7 @@ const ParticleCanvas = () => {
       c.globalAlpha = this.opacity;
       c.beginPath();
       c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      c.fillStyle = this.color;
+      c.fillStyle = this.color; // Use the stored color
       c.fill();
       c.closePath();
       c.restore();
@@ -42,7 +44,7 @@ const ParticleCanvas = () => {
       this.velocity.y += gravity;
       this.x += this.velocity.x;
       this.y += this.velocity.y;
-      this.opacity -= 0.01;
+      this.opacity -= 0.003;
     }
   }
 
@@ -56,8 +58,8 @@ const ParticleCanvas = () => {
     mouse.current.x = event.clientX;
     mouse.current.y = event.clientY;
 
-    const particleCount = 300;
-    const power = 6;
+    const particleCount = 500;
+    //const power = 12;
     let radians = (Math.PI * 2) / particleCount;
 
     for (let i = 0; i < particleCount; i++) {
@@ -66,7 +68,7 @@ const ParticleCanvas = () => {
           mouse.current.x,
           mouse.current.y,
           3,
-          `hsl(${Math.random() * 360}, 50%, 50%)`,
+          color, // Use the selected color from props
           {
             x: Math.cos(radians * i) * (Math.random() * power),
             y: Math.sin(radians * i) * (Math.random() * power),
@@ -77,7 +79,7 @@ const ParticleCanvas = () => {
   };
 
   const animate = (c) => {
-    requestAnimationFrame(() => animate(c));
+    animationId.current = requestAnimationFrame(() => animate(c)); // Store animation frame ID
     c.fillStyle = 'rgba(0,0,0,0.05)';
     c.fillRect(0, 0, c.canvas.width, c.canvas.height);
 
@@ -99,13 +101,14 @@ const ParticleCanvas = () => {
     window.addEventListener('resize', handleResize);
     window.addEventListener('click', handleClick);
 
-    animate(c);
+    animate(c); // Start animation
 
     return () => {
+      cancelAnimationFrame(animationId.current); // Clean up animation on component unmount
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('click', handleClick);
     };
-  }, []);
+  }, [color,power]); // Update animation if color changes
 
   return <canvas ref={canvasRef} />;
 };
