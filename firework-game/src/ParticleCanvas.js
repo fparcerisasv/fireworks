@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 
-const ParticleCanvas = ({ color,power }) => {
+const ParticleCanvas = ({ color,power,metal }) => {
   const canvasRef = useRef(null);
   const particles = useRef([]);
   const animationId = useRef(null); // Store animation frame ID
@@ -13,17 +13,17 @@ const ParticleCanvas = ({ color,power }) => {
   const friction = 0.99;
 
   class Particle {
-    constructor(x, y, radius, color, velocity) {
+    constructor(x, y, radius, color, velocity,metal) {
       this.x = x;
       this.y = y;
       this.radius = radius;
       this.color = color; // Store the particle's color
-
+    this.metal = metal;
       this.velocity = {
         x: velocity.x,
         y: velocity.y,
       };
-      this.opacity = 1;
+      this.opacity = metal/20;
     }
 
     draw(c) {
@@ -68,11 +68,11 @@ const ParticleCanvas = ({ color,power }) => {
           mouse.current.x,
           mouse.current.y,
           3,
-          color, // Use the selected color from props
+          color,// Use the selected color from props
           {
             x: Math.cos(radians * i) * (Math.random() * power),
             y: Math.sin(radians * i) * (Math.random() * power),
-          }
+          },metal
         )
       );
     }
@@ -108,7 +108,7 @@ const ParticleCanvas = ({ color,power }) => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('click', handleClick);
     };
-  }, [color,power]); // Update animation if color changes
+  }, [color,power,metal]); // Update animation if color changes
 
   return <canvas ref={canvasRef} />;
 };
