@@ -10,9 +10,7 @@ const App = () => {
   const [power, setPower] = useState(12); // Default power value
   const [metal, setMetal] = useState(12); // Defaultmetal value
   const [count, setCount] = useState(0);
-  const handleClick = () => {
-    setCount(prevCount => prevCount + power); // Increment count by the current power value
-  };
+ 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <div style={{ flex: 1 }}>

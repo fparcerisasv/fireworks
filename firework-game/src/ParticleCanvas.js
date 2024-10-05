@@ -1,5 +1,5 @@
 // src/components/ParticleCanvas.js
-
+//code borrowed from https://codepen.io/chriscourses/pen/Vwamprd 
 import React, { useEffect, useRef } from 'react';
 
 const ParticleCanvas = ({ color,power,metal ,setCount}) => {
@@ -108,7 +108,7 @@ const ParticleCanvas = ({ color,power,metal ,setCount}) => {
       cancelAnimationFrame(animationId.current); // Clean up animation on component unmount
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('click', handleClick);
-    };
+    };//eslint-disable-next-line
   }, [color,power,metal]); // Update animation if color changes
 
   return <canvas ref={canvasRef} />;
